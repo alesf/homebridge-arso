@@ -196,7 +196,7 @@ ARSO.prototype = {
 					data[attr] = cValue;
 				}
 			}
-			if (data[attr] !== undefined) {
+			if (data[attr] !== undefined && this[attr].show) {
 				this.services[attr]
 					.getCharacteristic(this.weather.characteristics[attr])
 					.updateValue(data[attr], null);
@@ -248,7 +248,7 @@ ARSO.prototype = {
 
         for (const attr in this.air.characteristics) {
             var cValue = parseFloat(postaja[attr]);
-            if (!isNaN(cValue))  {
+            if (!isNaN(cValue) && this.air_quality.show)  {
 				data[attr] = cValue;
 				this.services.airQuality
 					.getCharacteristic(this.air.characteristics[attr])
