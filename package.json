@@ -1,0 +1,36 @@
+{
+  "name": "homebridge-arso",
+  "version": "1.0.0",
+  "description": "Homebridge plugin for Slovenian weather data (ARSO)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alesf/homebridge-arso.git"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "homebridge",
+    "arso",
+    "weather",
+    "slovenia"
+  ],
+  "engines": {
+    "node": ">=6.4.0",
+    "homebridge": ">=0.4.0"
+  },
+  "author": "Ales Farcnik",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/alesf/homebridge-arso/issues"
+  },
+  "homepage": "https://github.com/alesf/homebridge-arso#readme",
+  "dependencies": {
+    "hap-nodejs": "^0.8.5",
+    "homebridge": "^1.1.7",
+    "request": "^2.88.2",
+    "xml2js": "^0.4.23"
+  }
+}
