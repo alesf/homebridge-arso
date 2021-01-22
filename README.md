@@ -15,8 +15,8 @@ Full:
 
 	{
 		"accessory": "ARSO",
-		"weather_city": "SEE OPTIONS",
-		"air_city": "SEE OPTIONS",
+		"weather_city": "SEE OPTIONS", // see weather station options
+		"air_city": "SEE OPTIONS", // see air station options
 		"temperature": {
 			"show": true,
 			"name": "Temperature"
