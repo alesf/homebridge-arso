@@ -301,14 +301,14 @@ ARSO.prototype = {
     getServices: function () {
         this.services.information = new Service.AccessoryInformation();
         this.services.information
-            .setCharacteristic(Characteristic.Manufacturer, "AL.FA")
+            .setCharacteristic(Characteristic.Manufacturer, "AL.FA.ARSO")
             .setCharacteristic(Characteristic.Model, "http")
 			.setCharacteristic(Characteristic.SerialNumber, this.serial_number);
 
 		if (this.weather_station) {
 			for (const attr in this.weather.characteristics) {
 				if (this[attr].show) {
-					this.services[attr] = new this.weather.services[attr](this[attr].name);
+					this.services[attr] = new this.weather.services[attr](this[attr].name, 'subtype' + attr);
 					this.services[attr]
 						.getCharacteristic(this.weather.characteristics[attr])
 						.on('get', (callback) => {
