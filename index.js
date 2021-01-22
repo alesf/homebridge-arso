@@ -58,15 +58,15 @@ function ARSO(log, config) {
 		services: {
 			'temperature': Service.TemperatureSensor,
 			'humidity': Service.HumiditySensor,
-			'rain': Service.ContactSensor,
-			'snow': Service.ContactSensor
+			'rain': Service.Switch,
+			'snow': Service.Switch
 		},
 
 		characteristics: {
 			'temperature': Characteristic.CurrentTemperature,
 			'humidity': Characteristic.CurrentRelativeHumidity,
-			'rain': Characteristic.ContactSensorState,
-			'snow': Characteristic.ContactSensorState
+			'rain': Characteristic.On,
+			'snow': Characteristic.On
 		}
 	};
 
@@ -308,7 +308,7 @@ ARSO.prototype = {
 		if (this.weather_station) {
 			for (const attr in this.weather.characteristics) {
 				if (this[attr].show) {
-					this.services[attr] = new this.weather.services[attr](this[attr].name, 'subtype' + attr);
+					this.services[attr] = new this.weather.services[attr](this[attr].name, 'arso-subtype-' + attr);
 					this.services[attr]
 						.getCharacteristic(this.weather.characteristics[attr])
 						.on('get', (callback) => {
