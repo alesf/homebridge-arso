@@ -8,7 +8,7 @@ Minimal:
 	{
 		"accessory": "ARSO",
 		"weather_station": "BABNO-POL", // see weather station options
-		"air_station": "E21", // see air station options
+		"air_station": "E26" // see air station options
 	}
 
 Full:
