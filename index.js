@@ -15,6 +15,7 @@ function ARSO(log, config) {
     this.log = log;
 
 	this.name = config['name'] || "ARSO";
+	this.serial_number = config['serial_number'] || "0111-0111-0111";
 
 	this.weather_station = config['weather_station'] || 'si';
 	this.air_station = config['air_station'] || null;
@@ -302,7 +303,7 @@ ARSO.prototype = {
         this.services.information
             .setCharacteristic(Characteristic.Manufacturer, "AL.FA")
             .setCharacteristic(Characteristic.Model, "http")
-			.setCharacteristic(Characteristic.SerialNumber, "0110-0110-0111");
+			.setCharacteristic(Characteristic.SerialNumber, this.serial_number);
 
 		if (this.weather_station) {
 			for (const attr in this.weather.characteristics) {
