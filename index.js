@@ -14,6 +14,8 @@ module.exports = function (homebridge) {
 function ARSO(log, config) {
     this.log = log;
 
+	this.name = config['name'] || "ARSO";
+
 	this.weather_station = config['weather_station'] || 'si';
 	this.air_station = config['air_station'] || null;
 

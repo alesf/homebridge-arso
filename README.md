@@ -7,6 +7,7 @@ Minimal:
 
 	{
 		"accessory": "ARSO",
+		"name": "ARSO",
 		"weather_station": "BABNO-POL", // see weather station options
 		"air_station": "E26" // see air station options
 	}
@@ -15,6 +16,7 @@ Full:
 
 	{
 		"accessory": "ARSO",
+		"name": "ARSO",
 		"weather_city": "SEE OPTIONS", // see weather station options
 		"air_city": "SEE OPTIONS", // see air station options
 		"temperature": {
