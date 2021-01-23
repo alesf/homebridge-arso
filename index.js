@@ -58,15 +58,15 @@ function ARSO(log, config) {
 		services: {
 			'temperature': Service.TemperatureSensor,
 			'humidity': Service.HumiditySensor,
-			'rain': Service.Switch,
-			'snow': Service.Switch
+			'rain': Service.MotionSensor,
+			'snow': Service.MotionSensor
 		},
 
 		characteristics: {
 			'temperature': Characteristic.CurrentTemperature,
 			'humidity': Characteristic.CurrentRelativeHumidity,
-			'rain': Characteristic.On,
-			'snow': Characteristic.On
+			'rain': Characteristic.MotionDetected,
+			'snow': Characteristic.MotionDetected
 		}
 	};
 
@@ -301,7 +301,7 @@ ARSO.prototype = {
     getServices: function () {
         this.services.information = new Service.AccessoryInformation();
         this.services.information
-            .setCharacteristic(Characteristic.Manufacturer, "AL.FA.ARSO")
+            .setCharacteristic(Characteristic.Manufacturer, "AL.FA")
             .setCharacteristic(Characteristic.Model, "http")
 			.setCharacteristic(Characteristic.SerialNumber, this.serial_number);
 
