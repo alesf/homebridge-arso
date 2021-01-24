@@ -309,6 +309,9 @@ ARSO.prototype = {
 			for (const attr in this.weather.characteristics) {
 				if (this[attr].show) {
 					this.services[attr] = new this.weather.services[attr](this[attr].name, 'arso-subtype-' + attr);
+					if (attr == 'temperature') {
+						this.services[attr].getCharacteristic(Characteristic.CurrentTemperature).setProps({minValue: -60});
+					}
 					this.services[attr]
 						.getCharacteristic(this.weather.characteristics[attr])
 						.on('get', (callback) => {
