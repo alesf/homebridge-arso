@@ -1,22 +1,32 @@
 # homebridge-arso
 Homebridge plugin for Slovenian weather data (ARSO)
 
+## Installation
+
+Install [Homebridge](https://homebridge.io).
+
+Run `npm i homebridge-arso` in your homebridge folder or install globally `-g`.
+
+Update your config.json file.
+
 ## Sample config
 
 Minimal:
 
 	{
 		"accessory": "ARSO",
-		"weather_station": "SEE OPTIONS", // see weather station options
-		"air_station": "SEE OPTIONS", // see air station options
+		"name": "ARSO",
+		"weather_station": "BABNO-POL", // see weather station options
+		"air_station": "E26" // see air station options
 	}
 
 Full:
 
 	{
 		"accessory": "ARSO",
-		"weather_city": "SEE OPTIONS",
-		"air_city": "SEE OPTIONS",
+		"name": "ARSO",
+		"weather_city": "SEE OPTIONS", // see weather station options
+		"air_city": "SEE OPTIONS", // see air station options
 		"temperature": {
 			"show": true,
 			"name": "Temperature"
@@ -170,3 +180,11 @@ Air station options:
 	Novo mesto -> E418
 	Iskrba -> M16
 	Krvavec -> M22
+
+## DISCLAIMER
+
+All data provided by [ARSO](https://www.arso.gov.si).
+
+Weather data source: http://www.meteo.si/met/sl/service/
+
+Air quality data source: https://www.arso.gov.si/zrak/kakovost%20zraka/podatki/kakovost_zraka_xml.html

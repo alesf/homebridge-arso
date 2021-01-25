@@ -1,6 +1,6 @@
 {
   "name": "homebridge-arso",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "Homebridge plugin for Slovenian weather data (ARSO)",
   "main": "index.js",
   "scripts": {
@@ -28,8 +28,6 @@
   },
   "homepage": "https://github.com/alesf/homebridge-arso#readme",
   "dependencies": {
-    "hap-nodejs": "^0.8.5",
-    "homebridge": "^1.1.7",
     "request": "^2.88.2",
     "xml2js": "^0.4.23"
   }

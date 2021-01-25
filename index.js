@@ -14,6 +14,9 @@ module.exports = function (homebridge) {
 function ARSO(log, config) {
     this.log = log;
 
+	this.name = config['name'] || "ARSO";
+	this.serial_number = config['serial_number'] || "0111-0111-0111";
+
 	this.weather_station = config['weather_station'] || 'si';
 	this.air_station = config['air_station'] || null;
 
@@ -55,15 +58,15 @@ function ARSO(log, config) {
 		services: {
 			'temperature': Service.TemperatureSensor,
 			'humidity': Service.HumiditySensor,
-			'rain': Service.ContactSensor,
-			'snow': Service.ContactSensor
+			'rain': Service.MotionSensor,
+			'snow': Service.MotionSensor
 		},
 
 		characteristics: {
 			'temperature': Characteristic.CurrentTemperature,
 			'humidity': Characteristic.CurrentRelativeHumidity,
-			'rain': Characteristic.ContactSensorState,
-			'snow': Characteristic.ContactSensorState
+			'rain': Characteristic.MotionDetected,
+			'snow': Characteristic.MotionDetected
 		}
 	};
 
@@ -126,7 +129,7 @@ ARSO.prototype = {
 
     fetchData: function (service) {
         if (this[service].fetchInProgress) {
-            // this.log('Avoid fetchData as previous response has not arrived yet.');
+            // Avoid fetchData as previous response has not arrived yet.
             return false;
         }
 
@@ -138,7 +141,6 @@ ARSO.prototype = {
                 method: 'GET',
                 timeout: this.httpTimeout
             };
-            this.log(`${service}: Requesting`);
 
             request(options, (error, res, body) => {
                 var data = null;
@@ -146,8 +148,8 @@ ARSO.prototype = {
                     this.log(`${service}: bad response (${options.uri}): ${error.message}`);
                 } else {
                     try {
-                        data = this[`${service}Data`](body);
-                        this.log(`${service}: successful response`);
+						data = this[`${service}Data`](body);
+                        this.log(`${service}: successful response | ` + JSON.stringify(data));
                         this[service].lastUpdate = new Date().getTime() / 1000;
                     } catch (parseErr) {
                         this.log(`${service}: Error processing received information: ${parseErr.message}`);
@@ -179,6 +181,9 @@ ARSO.prototype = {
 		let self = this;
 
 		parseString(body, function (err, result) {
+			if (err) {
+				throw new Error('weather: XML Parse error' + err.message);
+			}
 			postaja = result.data.metData[0];
 			postaja.temperature = postaja.t || null;
 			postaja.humidity = postaja.rh || null;
@@ -193,7 +198,7 @@ ARSO.prototype = {
 					data[attr] = cValue;
 				}
 			}
-			if (data[attr] !== undefined) {
+			if (data[attr] !== undefined && this[attr].show) {
 				this.services[attr]
 					.getCharacteristic(this.weather.characteristics[attr])
 					.updateValue(data[attr], null);
@@ -237,7 +242,7 @@ ARSO.prototype = {
 
         parseString(body, function (err, result) {
 			if (err) {
-				throw new Error('air: XML Parse error');
+				throw new Error('air: XML Parse error' + err.message);
 			}
 			const postaje = result.arsopodatki.postaja;
 			postaja = postaje[Object.keys(postaje).find(key => postaje[key]['$'].sifra === air_station)];
@@ -245,7 +250,7 @@ ARSO.prototype = {
 
         for (const attr in this.air.characteristics) {
             var cValue = parseFloat(postaja[attr]);
-            if (!isNaN(cValue))  {
+            if (!isNaN(cValue) && this.air_quality.show)  {
 				data[attr] = cValue;
 				this.services.airQuality
 					.getCharacteristic(this.air.characteristics[attr])
@@ -300,12 +305,15 @@ ARSO.prototype = {
         this.services.information
             .setCharacteristic(Characteristic.Manufacturer, "AL.FA")
             .setCharacteristic(Characteristic.Model, "http")
-			.setCharacteristic(Characteristic.SerialNumber, "0110-0110-0111");
+			.setCharacteristic(Characteristic.SerialNumber, this.serial_number);
 
 		if (this.weather_station) {
 			for (const attr in this.weather.characteristics) {
 				if (this[attr].show) {
-					this.services[attr] = new this.weather.services[attr](this[attr].name);
+					this.services[attr] = new this.weather.services[attr](this[attr].name, 'arso-subtype-' + attr);
+					if (attr == 'temperature') {
+						this.services[attr].getCharacteristic(Characteristic.CurrentTemperature).setProps({minValue: -60});
+					}
 					this.services[attr]
 						.getCharacteristic(this.weather.characteristics[attr])
 						.on('get', (callback) => {
