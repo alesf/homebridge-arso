@@ -178,4 +178,5 @@ Air station options:
 All data provided by [ARSO](https://www.arso.gov.si).
 
 Weather data source: http://www.meteo.si/met/sl/service/
+
 Air quality data source: https://www.arso.gov.si/zrak/kakovost%20zraka/podatki/kakovost_zraka_xml.html

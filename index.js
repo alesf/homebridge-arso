@@ -129,7 +129,7 @@ ARSO.prototype = {
 
     fetchData: function (service) {
         if (this[service].fetchInProgress) {
-            // this.log('Avoid fetchData as previous response has not arrived yet.');
+            // Avoid fetchData as previous response has not arrived yet.
             return false;
         }
 
@@ -141,7 +141,6 @@ ARSO.prototype = {
                 method: 'GET',
                 timeout: this.httpTimeout
             };
-            this.log(`${service}: Requesting`);
 
             request(options, (error, res, body) => {
                 var data = null;
@@ -149,8 +148,8 @@ ARSO.prototype = {
                     this.log(`${service}: bad response (${options.uri}): ${error.message}`);
                 } else {
                     try {
-                        data = this[`${service}Data`](body);
-                        this.log(`${service}: successful response`);
+						data = this[`${service}Data`](body);
+                        this.log(`${service}: successful response | ` + JSON.stringify(data));
                         this[service].lastUpdate = new Date().getTime() / 1000;
                     } catch (parseErr) {
                         this.log(`${service}: Error processing received information: ${parseErr.message}`);
@@ -182,6 +181,9 @@ ARSO.prototype = {
 		let self = this;
 
 		parseString(body, function (err, result) {
+			if (err) {
+				throw new Error('weather: XML Parse error' + err.message);
+			}
 			postaja = result.data.metData[0];
 			postaja.temperature = postaja.t || null;
 			postaja.humidity = postaja.rh || null;
@@ -240,7 +242,7 @@ ARSO.prototype = {
 
         parseString(body, function (err, result) {
 			if (err) {
-				throw new Error('air: XML Parse error');
+				throw new Error('air: XML Parse error' + err.message);
 			}
 			const postaje = result.arsopodatki.postaja;
 			postaja = postaje[Object.keys(postaje).find(key => postaje[key]['$'].sifra === air_station)];
