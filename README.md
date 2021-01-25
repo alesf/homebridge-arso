@@ -1,6 +1,14 @@
 # homebridge-arso
 Homebridge plugin for Slovenian weather data (ARSO)
 
+## Installation
+
+Install [Homebridge](https://homebridge.io).
+
+Run `npm i homebridge-arso` in your homebridge folder or install globally `-g`.
+
+Update your config.json file.
+
 ## Sample config
 
 Minimal:
