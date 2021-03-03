@@ -2,6 +2,9 @@
 
 const request = require('request');
 const parseString = require('xml2js').parseString;
+const isObject = function(obj) {
+	return obj === Object(obj);
+}
 
 let Service, Characteristic;
 
@@ -175,7 +178,7 @@ ARSO.prototype = {
 
 	weatherData: function(body) {
 
-		var postaja;
+		var postaja = {};
 		var data = {};
 
 		let self = this;
@@ -192,12 +195,14 @@ ARSO.prototype = {
 		});
 
 		for (const attr in this.weather.characteristics) {
-			if(data[attr] === undefined) {
+			// temperature and humidity
+			if(data[attr] === undefined && isObject(postaja)) {
 				var cValue = parseFloat(postaja[attr]);
 				if (!isNaN(cValue))  {
 					data[attr] = cValue;
 				}
 			}
+			// snow and rain
 			if (data[attr] !== undefined && this[attr].show) {
 				this.services[attr]
 					.getCharacteristic(this.weather.characteristics[attr])
@@ -235,7 +240,7 @@ ARSO.prototype = {
 
     airData: function(body) {
 
-		var postaja;
+		var postaja = {};
 		var data = {};
 
 		var air_station = this.air_station;
@@ -249,7 +254,10 @@ ARSO.prototype = {
 		});
 
         for (const attr in this.air.characteristics) {
-            var cValue = parseFloat(postaja[attr]);
+			var cValue;
+			if (isObject(postaja)) {
+				cValue = parseFloat(postaja[attr]);
+			}
             if (!isNaN(cValue) && this.air_quality.show)  {
 				data[attr] = cValue;
 				this.services.airQuality
@@ -286,12 +294,22 @@ ARSO.prototype = {
 
     getState: function (callback, service, characteristic) {
         if (!this.needsUpdate(service)) {
+			if (!isObject(this[service].data) || isNaN(this[service].data[characteristic])) {
+				var error = 'No data for ' + characteristic;
+				callback(error, null);
+            	return error;
+			}
             callback(null, this[service].data[characteristic]);
             return this[service].data[characteristic];
         }
 
         this.fetchData(service);
         this[service].dataUpdated.then((data) => {
+			if (!isObject(data) || isNaN(data[characteristic])) {
+				var error = 'No data for ' + characteristic;
+				callback(error, null);
+            	return error;
+			}
             callback(null, data[characteristic]);
             return data[characteristic];
         }, (error) => {
