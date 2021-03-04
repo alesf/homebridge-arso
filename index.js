@@ -5,6 +5,9 @@ const parseString = require('xml2js').parseString;
 const isObject = function(obj) {
 	return obj === Object(obj);
 }
+const isString = function(str) {
+	return str === String(str);
+}
 
 let Service, Characteristic;
 
@@ -256,6 +259,10 @@ ARSO.prototype = {
         for (const attr in this.air.characteristics) {
 			var cValue;
 			if (isObject(postaja)) {
+				// sometimes the value is <1 so we convert it to a valid float
+				if (String(postaja[attr]) === '<1') {
+					postaja[attr] = 0;
+				}
 				cValue = parseFloat(postaja[attr]);
 			}
             if (!isNaN(cValue) && this.air_quality.show)  {

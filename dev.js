@@ -4,7 +4,7 @@ class DemoService {
 	characteristics = {};
 	characteristic = null;
 
-	constructor(name) {
+	constructor(name, id) {
 		this.name = name;
 	}
 
@@ -22,11 +22,15 @@ class DemoService {
 	updateValue(value, err) {
 		console.log(`${this.name} ${this.characteristic.name} || ${value}`);
 	}
+	setProps(props) {
+
+	}
 }
 
 const hapService = {
 	AccessoryInformation: DemoService,
 	TemperatureSensor: DemoService,
+	MotionSensor: DemoService,
 	HumiditySensor: DemoService,
 	ContactSensor: DemoService,
 	AirQualitySensor: DemoService
@@ -34,7 +38,7 @@ const hapService = {
 
 const homebridge = {
 	config: {
-		air_station: 'E801'
+		air_station: 'E402'
 	},
 	log: function (data) {
 		console.log('LOG: ' + data);
@@ -71,7 +75,7 @@ const homebridge = {
 				name: 'PM10'
 			},
 			OzoneDensity: {
-				name: 'O'
+				name: 'O3'
 			},
 			NitrogenDioxideDensity: {
 				name: 'NO2'
@@ -81,6 +85,9 @@ const homebridge = {
 			},
 			ContactSensorState: {
 				name: 'CONTACT'
+			},
+			MotionDetected: {
+				name: 'MOTION-DETECTED'
 			},
 			AirQuality: {
 				name: 'AQ',
