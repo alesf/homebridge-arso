@@ -25,8 +25,8 @@ Full:
 	{
 		"accessory": "ARSO",
 		"name": "ARSO",
-		"weather_city": "SEE OPTIONS", // see weather station options
-		"air_city": "SEE OPTIONS", // see air station options
+		"weather_station": "SEE OPTIONS", // see weather station options
+		"air_station": "SEE OPTIONS", // see air station options
 		"temperature": {
 			"show": true,
 			"name": "Temperature"
@@ -48,10 +48,12 @@ Full:
 			"name": "Air Quality"
 		},
 		"httpTimeout": "3000", // in miliseconds
+		"weather_station_interval": 300, // in seconds, default is 300,
+		"air_station_interval": 1800, // in seconds, default is 1800
 	}
 
 ## Options
-Shows temperature, humidity and air quality for a given city.
+Shows temperature, humidity, rain, snow and air quality for a given city.
 
 Weather station options:
 
@@ -162,26 +164,29 @@ Weather station options:
 
 Air station options:
 
-	Ljubljana Bežigrad -> E21
+	LJ Bežigrad -> E403
 	LJ Celovška -> E405
+	LJ Vič -> E404
 	Kranj -> E417
-	MB center -> E22
-	MB Vrbanski plato -> E13
-	Celje -> E23
+	MB Titova -> E407
+	MB Vrbanski -> E408
+	CE bolnica -> E411
+	CE Ljubljanska -> E412
 	Ptuj -> E801
-	Murska Sobota -> E24
-	Deskle -> E402
-	Nova Gorica -> E25
-	Otlica -> E31
-	Koper -> E30
-	Trbovlje -> E26
-	Zagorje -> E27
-	Hrastnik -> E28
+	MS Rakičan -> E409
+	MS Cankarjeva -> E410
+	Solkan -> E804
+	NG Grčna -> E421
+	Otlica -> E424
+	Koper -> E423
+	Trbovlje -> E413
+	Zagorje -> E415
+	Hrastnik -> E414
 	Novo mesto -> E418
-	Iskrba -> M16
-	Krvavec -> M22
+	Iskrba -> E420
+	Krvavec -> E419
 
-## DISCLAIMER
+## Disclaimer
 
 All data provided by [ARSO](https://www.arso.gov.si).
 

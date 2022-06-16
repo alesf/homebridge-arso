@@ -55,7 +55,7 @@ function ARSO(log, config) {
 		lastUpdate: 0,
 		dateUpdated: null,
 		fetchInProgress: false,
-		pollingInterval: 420, // in seconds | 7 min | recommended 5 min after valid or 10 min
+		pollingInterval: config['weather_station_interval'] || 300, // in seconds | 7 min | recommended 5 min after valid or 10 min
 
 		icon_rain: /RA|FZRA|RASN|SHRA|SHRASN|SHGR|TS|TSRA|TSRASN/,
 		icon_snow: /RASN|SN|SHRASN|SHSN|TSRASN|TSSN|TSGR/,
@@ -82,7 +82,7 @@ function ARSO(log, config) {
 		lastUpdate: 0,
 		dateUpdated: null,
 		fetchInProgress: false,
-		pollingInterval: 1800, // in seconds | 30 min | recommended 48 min after hour or 60 min
+		pollingInterval: config['air_station_interval'] || 1800, // in seconds | 30 min | recommended 48 min after hour or 60 min
 
 		// excelent, good, fair, inferior, poor
 		// https://www.aircheckr.com/help-and-guides/air-quality-index
