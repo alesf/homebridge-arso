@@ -38,7 +38,7 @@ const hapService = {
 
 const homebridge = {
 	config: {
-		air_station: 'E402'
+		air_station: 'E411'
 	},
 	log: function (data) {
 		console.log('LOG: ' + data);

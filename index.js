@@ -1,6 +1,6 @@
 "use strict";
 
-const request = require('request');
+const axios = require('axios');
 const parseString = require('xml2js').parseString;
 const isObject = function(obj) {
 	return obj === Object(obj);
@@ -141,42 +141,33 @@ ARSO.prototype = {
 
         this[service].fetchInProgress = true;
 
-        this[service].dataUpdated = new Promise((resolve, reject) => {
-            var options = {
-                uri: this[service].url,
-                method: 'GET',
-                timeout: this.httpTimeout
-            };
-
-            request(options, (error, res, body) => {
-                var data = null;
-                if (error) {
-                    this.log(`${service}: bad response (${options.uri}): ${error.message}`);
-                } else {
-                    try {
-						data = this[`${service}Data`](body);
-                        this.log(`${service}: successful response | ` + JSON.stringify(data));
-                        this[service].lastUpdate = new Date().getTime() / 1000;
-                    } catch (parseErr) {
-                        this.log(`${service}: Error processing received information: ${parseErr.message}`);
-                        error = parseErr;
-                    }
-                }
-
-                if (error) {
-                    reject(error.message);
-                } else {
-                    resolve(data);
-                }
-
-                this[service].fetchInProgress = false;
-            });
-        }).then((data) => {
-            return data;
-        }, (error) => {
-            // Avoid NodeJS warning about uncatched rejected promises
-            return error;
-        });
+		this[service].dataUpdated = new Promise((resolve, reject) => {
+			axios.get(this[service].url, { timeout: this.httpTimeout })
+				.then(response => {
+					let data = null;
+					try {
+						data = this[`${service}Data`](response.data);
+						this.log(`${service}: successful response | ` + JSON.stringify(data));
+						this[service].lastUpdate = new Date().getTime() / 1000;
+						resolve(data);
+					} catch (parseErr) {
+						this.log(`${service}: Error processing received information: ${parseErr.message}`);
+						reject(parseErr.message);
+					}
+				})
+				.catch(error => {
+					this.log(`${service}: bad response (${this[service].url}): ${error.message}`);
+					reject(error.message);
+				})
+				.finally(() => {
+					this[service].fetchInProgress = false;
+				});
+		}).then((data) => {
+			return data;
+		}, (error) => {
+			// Avoid NodeJS warning about uncatched rejected promises
+			return error;
+		});
     },
 
 	weatherData: function(body) {
@@ -312,7 +303,7 @@ ARSO.prototype = {
 
         this.fetchData(service);
         this[service].dataUpdated.then((data) => {
-			if (!isObject(data) || isNaN(data[characteristic])) {
+			if (!isObject(data) || (characteristic != 'air_quality' && isNaN(data[characteristic]))) {
 				var error = 'No data for ' + characteristic;
 				callback(error, null);
             	return error;
