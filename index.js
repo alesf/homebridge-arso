@@ -89,18 +89,19 @@ function ARSO(log, config) {
 		// https://www.tecamgroup.com/acceptable-voc-levels/
 		// https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf
 		limits: {
-			'pm10': [0, 20, 40, 75, 100],
-			'pm2.5': [0, 15, 30, 50, 70],
-			'o3': [0, 40, 100, 140, 180],
-			'no2': [0, 10, 30, 100, 150],
-			'so2': [0, 2, 35, 75, 185]
+			'pm10': [0, 0, 20, 40, 75, 100],
+			'pm2.5': [0, 0, 15, 30, 50, 70],
+			'o3': [0, 0, 40, 100, 140, 180],
+			'no2': [0, 0, 10, 30, 100, 150],
+			'so2': [0, 0, 2, 35, 75, 185]
 		},
 		levels: {
-			0: Characteristic.AirQuality.EXCELLENT,
-			1: Characteristic.AirQuality.GOOD,
-			2: Characteristic.AirQuality.FAIR,
-			3: Characteristic.AirQuality.INFERIOR,
-			4: Characteristic.AirQuality.POOR
+			0: Characteristic.AirQuality.UNKNOWN,
+			1: Characteristic.AirQuality.EXCELLENT,
+			2: Characteristic.AirQuality.GOOD,
+			3: Characteristic.AirQuality.FAIR,
+			4: Characteristic.AirQuality.INFERIOR,
+			5: Characteristic.AirQuality.POOR
 		},
 		characteristics: {
 			'air_quality': Characteristic.AirQuality,
