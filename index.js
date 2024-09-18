@@ -266,8 +266,9 @@ ARSO.prototype = {
         }
 
         if (Object.keys(data).length === 0) {
-            this.air.data = null;
-            throw new Error('air: No data');
+            data.air_quality = Characteristic.AirQuality.UNKNOWN;
+			this.air.data = data;
+        	return data;
 		}
 
 		data.air_quality = this.calculateAirQuality(data);
